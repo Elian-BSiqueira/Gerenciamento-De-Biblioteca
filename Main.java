@@ -1,6 +1,11 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Classe principal do sistema de gerenciamento de biblioteca.
+ * Permite adicionar, remover, listar e pesquisar livros através de uma interface de console.
+ */
+
 public class Main {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
@@ -18,6 +23,8 @@ public class Main {
         ArrayList<String> biblioteca = new ArrayList<>();
 
         int opcao = -1;
+
+        // Loop principal do menu até que o usuário escolha sair (opção 5)
         while (opcao != 5) {
             System.out.println(menu);
 
@@ -25,6 +32,7 @@ public class Main {
 
             switch (opcao) {
                 case 1:
+                    // Adição de livro
                     String livro = "";
                     do {
                         System.out.print("Digite o livro para adicionar: ");
@@ -47,6 +55,7 @@ public class Main {
                     break;
 
                 case 2:
+                    // Remoção de livro por título
                     if (biblioteca.isEmpty()) {
                         System.out.println("Não há livros no biblioteca");
                         break;
@@ -82,6 +91,7 @@ public class Main {
                     break;
 
                 case 3:
+                    // Pesquisa de livro por título
                     if (biblioteca.isEmpty()) {
                         System.out.println("Não há livros no biblioteca");
                         break;
@@ -106,6 +116,7 @@ public class Main {
                     break;
 
                 case 4:
+                    // Listagem dos livros
                     if (biblioteca.isEmpty()) {
                         System.out.println("Não há livros na biblioteca");
                     } else {
@@ -117,10 +128,12 @@ public class Main {
                     break;
 
                 case 5:
+                    // Encerramento do programa
                     System.out.println("Saindo...");
                     break;
 
                 default:
+
                     System.out.println("Opcao invalida");
 
             }
