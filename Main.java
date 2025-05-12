@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -10,130 +12,241 @@ public class Main {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         String menu = """
-                1) Adicionar livro
-                2) Remover livro por titulo
-                3) Pesquisar livro por titulo
-                4) Listar livros
-                5) Sair
+                1) Adicionar autor e livro
+                2) Adicionar livro
+                3) Remover livro
+                4) Pesquisar livro por titulo
+                5) Pesquisar livros por autor
+                6) Listar livros
+                7) Sair
                 """;
 
         System.out.println("Biblioteca");
         System.out.println("=".repeat(30));
 
-        ArrayList<String> biblioteca = new ArrayList<>();
+        HashMap<String, ArrayList<String>> biblioteca = new HashMap<>();
 
         int opcao = -1;
-
-        // Loop principal do menu até que o usuário escolha sair (opção 5)
-        while (opcao != 5) {
+        while (opcao != 7) {
             System.out.println(menu);
 
-            opcao = FuncoesGerenciamento.VerificarInteiroComIntervalo("Digite sua opcao: ", 1, 5);
+            opcao = FuncoesGerenciamento.VerificarInteiroComIntervalo("Digite sua opcao: ", 1, 7);
 
             switch (opcao) {
                 case 1:
-
-                    String livro = "";
+                    String autor = "";
                     do {
-                        System.out.print("Digite o livro para adicionar: ");
-                        livro = scan.nextLine().toLowerCase().strip();
-                        if (livro.isEmpty()) {
-                            System.out.println("Campo livro nao pode ser vazio");
+                        System.out.print("Digite o autor do livro: ");
+                        autor = scan.nextLine().toLowerCase().strip();
+                        if (autor.isEmpty()) {
+                            System.out.println("Campo autor nao pode ser vazio");
                         }
 
-                    } while (livro.isEmpty());
+                    } while (autor.isEmpty());
 
-                    if (biblioteca.contains(livro)) {
-                        System.out.println("Livro ja esta na biblioteca");
-
+                    if (biblioteca.containsKey(autor)) {
+                        System.out.println("Autor ja esta na biblioteca");
+                        // Chama Adicionar livro
                     } else {
-                        biblioteca.add(livro);
-                        System.out.printf("Livro ' %s ' adicionado com sucesso %n", livro);
+                        biblioteca.put(autor, new ArrayList<>());
+                        String livro = "";
+
+                        do {
+                            System.out.print("Digite o titulo do livro: ");
+                            livro = scan.nextLine().toLowerCase().strip();
+
+                            if (livro.isEmpty()) {
+                                System.out.println("Campo livro nao pode ser vazio");
+                            }
+
+                        } while (livro.isEmpty());
+
+                        if (biblioteca.get(autor).contains(livro)) {
+                            System.out.println("Livro ja esta na biblioteca");
+                        } else {
+                            System.out.printf("Livro '%s' do autor(a) %s adicionado com sucesso %n", livro, autor);
+                            biblioteca.get(autor).add(livro);
+                        }
 
                     }
-
                     break;
-
                 case 2:
-                    // Remoção de livro por título
                     if (biblioteca.isEmpty()) {
-                        System.out.println("Não há livros no biblioteca");
+                        System.out.println("Não há autores na biblioteca");
                         break;
 
                     } else {
-
-                        for (String livros : biblioteca) {
-                            System.out.println(livros);
-
-
+                        for (String autores : biblioteca.keySet()) {
+                            System.out.println(autores);
                         }
-                        String removerLivro = "";
-                        do {
-                            System.out.print("Digite o livro que quer remover: ");
-                            removerLivro = scan.nextLine().toLowerCase().strip();
-                            if (removerLivro.isEmpty()) {
-                                System.out.println("Campo livro nao pode ser vazio");
+
+                        String verificarAutor = "";
+                        String livro = " ";
+                        boolean controleDeLoop = true;
+                        while (controleDeLoop) {
+                            System.out.println("Digite o nome do autor para adicionar o livro. Deixe em branco " +
+                                    "para cancelar: ");
+                            verificarAutor = scan.nextLine().toLowerCase().strip();
+
+                            if (verificarAutor.isEmpty() || biblioteca.containsKey(verificarAutor)) {
+                                controleDeLoop = false;
+                            } else {
+                                System.out.println("Autor nao encontrado");
+                            }
+                        }
+
+                        if (biblioteca.containsKey(verificarAutor)) {
+                            System.out.println("Autor esta na biblioteca");
+
+                            do {
+                                System.out.print("Digite o titulo do livro: ");
+                                livro = scan.nextLine().toLowerCase().strip();
+
+                                if (livro.isEmpty()) {
+                                    System.out.println("Campo livro nao pode ser vazio");
+                                }
+
+                            } while (livro.isEmpty());
+
+                            if (biblioteca.get(verificarAutor).contains(livro)) {
+                                System.out.println("Livro ja esta na biblioteca");
+                                break;
+                            } else {
+                                biblioteca.get(verificarAutor).add(livro);
+                                System.out.printf("Livro %s adicionado com sucesso ao autor(a) %s %n", livro,
+                                        verificarAutor);
                             }
 
-                        } while (removerLivro.isEmpty());
-
-                        boolean removeu = biblioteca.remove(removerLivro);
-
-                        if (removeu) {
-                            System.out.printf("Livro %s removido %n", removerLivro);
-                        } else {
-                            System.out.printf("Livro %s não encontrado na biblioteca %n", removerLivro);
                         }
 
-
                     }
-
                     break;
-
                 case 3:
-                    // Pesquisa de livro por título
                     if (biblioteca.isEmpty()) {
-                        System.out.println("Não há livros no biblioteca");
+                        System.out.println("Biblioteca esta vazia");
                         break;
-
                     } else {
-                        String pesquisarLivro = "";
-                        do {
-                            System.out.print("Digite o livro que quer pesquisar: ");
-                            pesquisarLivro = scan.nextLine().toLowerCase().strip();
-                            if (pesquisarLivro.isEmpty()) {
-                                System.out.println("Campo livro nao pode ser vazio");
-                            }
-                        } while (pesquisarLivro.isEmpty());
+                        biblioteca.forEach((chave, valor) -> {
+                            System.out.println("Autor: " + chave + " | Livros: " + valor);
+                        });
 
-                        if (biblioteca.contains(pesquisarLivro)) {
-                            System.out.printf("O livro ' %s ' esta na biblioteca %n", pesquisarLivro);
+                        String verificarAutor = "";
+                        String livro = " ";
+
+                        boolean controleDeLoop = true;
+                        while (controleDeLoop) {
+                            System.out.println("Digite o nome do autor para remover o livro. Deixe em branco " +
+                                    "para cancelar: ");
+                            verificarAutor = scan.nextLine().toLowerCase().strip();
+
+                            if (verificarAutor.isEmpty() || biblioteca.containsKey(verificarAutor)) {
+                                controleDeLoop = false;
+                            } else {
+                                System.out.println("Autor nao encontrado");
+                            }
+
+                        }
+                        if (verificarAutor.equals("")) {
+                            break;
+
                         } else {
-                            System.out.printf("livro ' %s ' nao esta na biblioteca %n", pesquisarLivro);
+
+                            do {
+                                System.out.print("Digite o titulo do livro: ");
+                                livro = scan.nextLine().toLowerCase().strip();
+
+                                if (livro.isEmpty()) {
+                                    System.out.println("Campo livro nao pode ser vazio");
+                                }
+
+                            } while (livro.isEmpty());
+
+
+                            boolean removeuLivro = biblioteca.get(verificarAutor).remove(livro);
+
+                            if (removeuLivro) {
+                                System.out.printf("Livro '%s' do autor '%s' removido %n", livro, verificarAutor);
+                            } else {
+                                System.out.println("Livro nao encontrado");
+
+                            }
+                            if (biblioteca.get(verificarAutor).isEmpty()) {
+                                biblioteca.remove(verificarAutor);
+                            }
+
                         }
                     }
-
                     break;
 
                 case 4:
-                    // Listagem dos livros
                     if (biblioteca.isEmpty()) {
                         System.out.println("Não há livros na biblioteca");
                     } else {
-                        for (String livros : biblioteca) {
-                            System.out.println(livros);
+                        String livroPesquisado = "";
+                        do {
+                            System.out.print("Digite o titulo do livro: ");
+                            livroPesquisado = scan.nextLine().toLowerCase().strip();
+
+                            if (livroPesquisado.isEmpty()) {
+                                System.out.println("Campo livro nao pode ser vazio");
+                            }
+
+                        } while (livroPesquisado.isEmpty());
+
+                        for (Map.Entry<String, ArrayList<String>> entry : biblioteca.entrySet()) {
+                            String autores = entry.getKey();
+                            ArrayList<String> livrosEscritos = entry.getValue();
+
+                            if (livrosEscritos.contains(livroPesquisado)) {
+                                System.out.printf("Livro '%s' escito por %s esta na biblioteca %n", livroPesquisado,
+                                        autores);
+                            } else {
+                                System.out.printf("Livro '%s' não encontrado na biblioteca.%n", livroPesquisado);
+                            }
+
+
                         }
+
+                    }
+                    break;
+
+                case 5:
+                    if (biblioteca.isEmpty()) {
+                        System.out.println("Não há livros na biblioteca");
+                    } else {
+                        String autorPesquisado = "";
+                        do {
+                            System.out.print("Digite o autor para pesquisar: ");
+                            autorPesquisado = scan.nextLine().toLowerCase().strip();
+
+                            if (autorPesquisado.isEmpty()) {
+                                System.out.println("Campo autor nao pode ser vazio");
+                            }
+
+                        } while (autorPesquisado.isEmpty());
+
+                        for (String livro : biblioteca.get(autorPesquisado)) {
+                            System.out.println("- " + livro);
+                        }
+                    }
+                    break;
+
+                case 6:
+                    if (biblioteca.isEmpty()) {
+                        System.out.println("Não há livros na biblioteca");
+                    } else {
+                        biblioteca.forEach((chave, valor) -> {
+                            System.out.println("Autor: " + chave + " | Livros: " + valor);
+                        });
                     }
 
                     break;
 
-                case 5:
-                    // Encerramento do programa
-                    System.out.println("Saindo...");
+                case 7:
+                    System.out.println("Saindo do programa...");
+                    scan.close();
                     break;
-
                 default:
-
                     System.out.println("Opcao invalida");
 
             }

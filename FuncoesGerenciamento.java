@@ -59,7 +59,7 @@ public class FuncoesGerenciamento {
                     controleDeLoop = false;
                 }
                 else {
-                    System.out.println("Opcao Invalida. Digite um numero entre 1 e 5");
+                    System.out.printf("Opcao Invalida. Digite um numero entre %d e %d %n", minimo, maximo);
                 }
 
             } catch (InputMismatchException e) {
