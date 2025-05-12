@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -67,6 +69,37 @@ public class FuncoesGerenciamento {
         } while (controleDeLoop);
 
         return numero;
+    }
+
+    public static void AdicionarLivro(List<String> lista, Scanner scanner) {
+        String livro = "";
+
+        do {
+            System.out.print("Digite o livro para adicionar: ");
+            livro = scanner.nextLine().toLowerCase().strip();
+            if (livro.isEmpty()) {
+                System.out.println("Campo livro nao pode ser vazio");
+            }
+
+        } while (livro.isEmpty());
+
+        if (lista.contains(livro)) {
+            System.out.println("Livro ja esta na biblioteca");
+
+        } else {
+            lista.add(livro);
+            System.out.printf("Livro ' %s ' adicionado com sucesso %n", livro);
+
+        }
+
+    }
+    public static void main(String[] args) {
+
+
+        System.out.print("Digite o livro para adicionar: ");
+
+
+
     }
 
 }

@@ -32,7 +32,7 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                    // Adição de livro
+
                     String livro = "";
                     do {
                         System.out.print("Digite o livro para adicionar: ");
