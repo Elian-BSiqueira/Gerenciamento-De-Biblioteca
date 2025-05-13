@@ -67,6 +67,44 @@ public class FuncoesGerenciamento {
         return numero;
     }
 
+
+    /**
+     * Adiciona um livro a um autor já existente na biblioteca.
+     *
+     * @param autor    O nome do autor ao qual o livro será associado.
+     * @param scanner  Scanner utilizado para entrada do nome do livro.
+     * @param hashMap  Estrutura que armazena autores e seus respectivos livros.
+     */
+    private static void AdicionarLivro(String autor, Scanner scanner, HashMap<String, ArrayList<String>> hashMap) {
+        String livro;
+        do {
+            System.out.print("Digite o titulo do livro: ");
+            livro = scanner.nextLine().toLowerCase().strip();
+
+            if (livro.isEmpty()) {
+                System.out.println("Campo livro nao pode ser vazio");
+            }
+
+        } while (livro.isEmpty());
+
+        if (hashMap.get(autor).contains(livro)) {
+            System.out.println("Livro ja esta na biblioteca");
+
+        } else {
+            hashMap.get(autor).add(livro);
+            System.out.printf("Livro %s adicionado com sucesso ao autor(a) %s %n", livro,
+                    autor);
+        }
+    }
+
+
+    /**
+     * Adiciona um novo autor e o primeiro livro relacionado a ele.
+     * Caso o autor já exista na biblioteca, informa o usuário.
+     *
+     * @param hashMap  Estrutura que armazena autores e seus respectivos livros.
+     * @param scanner  Scanner utilizado para entrada dos dados do autor e livro.
+     */
     public static void AdicionarAutorELivro(HashMap<String, ArrayList<String>> hashMap, Scanner scanner) {
         String autor = "";
         do {
@@ -82,46 +120,38 @@ public class FuncoesGerenciamento {
             System.out.println("Autor ja esta na biblioteca");
         } else {
             hashMap.put(autor, new ArrayList<>());
-            String livro = "";
+            AdicionarLivro(autor, scanner, hashMap);
 
-            do {
-                System.out.print("Digite o titulo do livro: ");
-                livro = scanner.nextLine().toLowerCase().strip();
-
-                if (livro.isEmpty()) {
-                    System.out.println("Campo livro nao pode ser vazio");
-                }
-
-            } while (livro.isEmpty());
-
-            if (hashMap.get(autor).contains(livro)) {
-                System.out.println("Livro ja esta na biblioteca");
-            } else {
-                System.out.printf("Livro '%s' do autor(a) %s adicionado com sucesso %n", livro, autor);
-                hashMap.get(autor).add(livro);
-            }
 
         }
 
 
     }
 
-    public static void AdicionarLivro(HashMap<String, ArrayList<String>> hashMap, Scanner scanner) {
+    /**
+     * Adiciona um novo livro a um autor já existente.
+     * Exibe os autores cadastrados e permite ao usuário escolher um.
+     * Caso o autor não exista ou a entrada seja inválida, informa o usuário.
+     *
+     * @param hashMap  Estrutura que armazena autores e seus respectivos livros.
+     * @param scanner  Scanner utilizado para entrada do nome do autor e do livro.
+     */
+    public static void AdicionarLivroAoAutor(HashMap<String, ArrayList<String>> hashMap, Scanner scanner) {
 
         for (String autores : hashMap.keySet()) {
             System.out.println(autores);
         }
 
-        String verificarAutor = "";
+        String autor = "";
         String livro = " ";
         boolean controleDeLoop = true;
         while (controleDeLoop) {
             System.out.println("Digite o nome do autor para adicionar o livro. Deixe em branco " +
                     "para cancelar: ");
 
-            verificarAutor = scanner.nextLine().toLowerCase().strip();
+            autor = scanner.nextLine().toLowerCase().strip();
 
-            if (verificarAutor.isEmpty() || hashMap.containsKey(verificarAutor)) {
+            if (autor.isEmpty() || hashMap.containsKey(autor)) {
                 controleDeLoop = false;
 
             } else {
@@ -129,32 +159,21 @@ public class FuncoesGerenciamento {
             }
         }
 
-        if (hashMap.containsKey(verificarAutor)) {
+        if (hashMap.containsKey(autor)) {
             System.out.println("Autor esta na biblioteca");
-
-            do {
-                System.out.print("Digite o titulo do livro: ");
-                livro = scanner.nextLine().toLowerCase().strip();
-
-                if (livro.isEmpty()) {
-                    System.out.println("Campo livro nao pode ser vazio");
-                }
-
-            } while (livro.isEmpty());
-
-            if (hashMap.get(verificarAutor).contains(livro)) {
-                System.out.println("Livro ja esta na biblioteca");
-
-            } else {
-                hashMap.get(verificarAutor).add(livro);
-                System.out.printf("Livro %s adicionado com sucesso ao autor(a) %s %n", livro,
-                        verificarAutor);
-            }
+            AdicionarLivro(autor, scanner, hashMap);
 
         }
 
     }
 
+    /**
+     * Remove um livro de um autor específico da biblioteca.
+     * Caso o autor não tenha mais livros após a remoção, o autor também é removido.
+     *
+     * @param hashMap  Estrutura que armazena autores e seus respectivos livros.
+     * @param scanner  Scanner utilizado para entrada do nome do autor e do livro.
+     */
     public static void RemoverLivro(HashMap<String, ArrayList<String>> hashMap, Scanner scanner) {
 
         hashMap.forEach((chave, valor) -> {
@@ -210,6 +229,13 @@ public class FuncoesGerenciamento {
         }
     }
 
+    /**
+     * Pesquisa se um determinado título de livro está presente na biblioteca
+     * e exibe o autor correspondente, se encontrado.
+     *
+     * @param hashMap  Estrutura que armazena autores e seus respectivos livros.
+     * @param scanner  Scanner utilizado para entrada do título do livro.
+     */
     public static void PesquisarLivroPorTitulo(HashMap<String, ArrayList<String>> hashMap, Scanner scanner) {
         String livroPesquisado = "";
         boolean controleDeLoop = true;
@@ -239,6 +265,12 @@ public class FuncoesGerenciamento {
         }
     }
 
+    /**
+     * Exibe todos os livros de um autor específico, se ele estiver cadastrado.
+     *
+     * @param hashMap  Estrutura que armazena autores e seus respectivos livros.
+     * @param scanner  Scanner utilizado para entrada do nome do autor.
+     */
     public static void PesquisarLivroPorAutor (HashMap < String, ArrayList < String >> hashMap, Scanner scanner){
             String autorPesquisado = "";
             boolean controleDeLoop = true;
@@ -265,6 +297,12 @@ public class FuncoesGerenciamento {
 
         }
 
+    /**
+     * Lista todos os autores cadastrados na biblioteca e seus respectivos livros.
+     *
+     * @param hashMap  Estrutura que armazena autores e seus respectivos livros.
+     * @param scanner  Scanner (não é utilizado neste método, mas está presente na assinatura).
+     */
     public static void ListarLivros(HashMap<String, ArrayList<String>> hashMap, Scanner scanner) {
         hashMap.forEach((chave, valor) -> {
             System.out.println("Autor: " + chave + " | Livros: " + valor);

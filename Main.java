@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -50,7 +49,7 @@ public class Main {
                 case 2:
                     verificarBiblioteca = VerificarBilioteca(biblioteca);
                     if (verificarBiblioteca) {
-                        FuncoesGerenciamento.AdicionarLivro(biblioteca, scan);
+                        FuncoesGerenciamento.AdicionarLivroAoAutor(biblioteca, scan);
                     } else {
                         break;
                     }
