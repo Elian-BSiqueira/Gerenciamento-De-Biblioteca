@@ -7,36 +7,6 @@ import java.util.*;
 public class FuncoesGerenciamento {
 
     /**
-     * Solicita ao usuário que digite um número inteiro.
-     * Continua pedindo até que uma entrada válida seja fornecida.
-     *
-     * @param texto Mensagem a ser exibida ao usuário.
-     * @return O número inteiro fornecido pelo usuário.
-     */
-    public static int VerificarNumeroInt(String texto) {
-
-
-        Scanner scan = new Scanner(System.in);
-        boolean controleDeLoop = true;
-        int numero = 0;
-
-        while (controleDeLoop) {
-            System.out.print(texto);
-            try {
-                numero = scan.nextInt();
-                controleDeLoop = false;
-
-            } catch (InputMismatchException e) {
-                scan.nextLine();
-                System.out.println("Entrada invalida. Digite um numero");
-            }
-
-        }
-        return numero;
-    }
-
-
-    /**
      * Solicita um número inteiro dentro de um intervalo específico.
      *
      * @param texto  Mensagem de entrada a ser exibida.
@@ -67,7 +37,6 @@ public class FuncoesGerenciamento {
         return numero;
     }
 
-
     /**
      * Adiciona um livro a um autor já existente na biblioteca.
      *
@@ -92,11 +61,10 @@ public class FuncoesGerenciamento {
 
         } else {
             hashMap.get(autor).add(livro);
-            System.out.printf("Livro %s adicionado com sucesso ao autor(a) %s %n", livro,
-                    autor);
+            System.out.printf("Livro %s adicionado com sucesso ao autor(a) %s. Total de livros: %d %n", livro,
+                    autor, hashMap.get(autor).size());
         }
     }
-
 
     /**
      * Adiciona um novo autor e o primeiro livro relacionado a ele.
