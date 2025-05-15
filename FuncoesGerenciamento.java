@@ -259,7 +259,7 @@ public class FuncoesGerenciamento {
             if (hashMap.containsKey(autorPesquisado)) {
                 System.out.printf("Livros do Autor(a) %s: ", autorPesquisado);
                 for (String livro : hashMap.get(autorPesquisado)) {
-                    System.out.println("- " + livro);
+                    System.out.println("\n" + "- " + livro);
                 }
             }
 
